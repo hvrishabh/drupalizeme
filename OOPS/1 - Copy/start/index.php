@@ -1,10 +1,7 @@
 <?php
-require __DIR__ . '/bootstrap.php';
+require __DIR__ . '/functions.php';
 
-$getShip = new ShipLoader;
-$ships = $getShip->getShips();
-// $ships = get_ships();
-
+$ships = get_ships();
 // echo "<pre>";
 // print_r($ships);
 // $test = $ships['starfighter']->name;

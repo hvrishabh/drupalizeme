@@ -1,13 +1,7 @@
 <?php
-require __DIR__ . '/bootstrap.php';
-require_once __DIR__ . '\lib\BattleManager.php';
-// require_once __DIR__ . '\lib\BattleManager.php';
-require_once __DIR__ . '\lib\Ship.php';
+require __DIR__ . '/functions.php';
 
-$getShip = new ShipLoader;
-$ships = $getShip->getShips();
-
-// $ships = getShips();
+$ships = get_ships();
 
 $ship1Name = isset($_POST['ship1_name']) ? $_POST['ship1_name'] : null;
 $ship1Quantity = isset($_POST['ship1_quantity']) ? $_POST['ship1_quantity'] : 1;
@@ -36,14 +30,10 @@ $ship2 = $ships[$ship2Name];
 // print_r($ship2);
 // var_dump($ship1, $ship2);
 
-// echo "</pre>";
+echo "</pre>";
 // exit;
 
-$battleManager = new BattleManager;
-// $ship =new Ship;
-$battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Quantity);
-
-// $battleResult = battle($ship1, $ship1Quantity, $ship2, $ship2Quantity);
+$outcome = battle($ship1, $ship1Quantity, $ship2, $ship2Quantity);
 ?>
 
 <html>
@@ -82,38 +72,31 @@ $battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Qua
             </div>
 
             <!-- <?php
-echo "<pre>";
-print_r($battleResult);
-echo "</pre>";
-?> -->
+            echo "<pre>";
+            print_r($outcome);
+            echo "</pre>";
+            ?> -->
             <div class="result-box center-block">
                 <h3 class="text-center audiowide">
                     Winner:
-                    <?php if ($battleResult->isThereAWinner()): ?>
-                        <?php echo $battleResult->getWinningShip()->getName(); ?>
+                    <?php if ($outcome['winning_ship']): ?>
+                        <?php echo $outcome['winning_ship']->getName(); ?>
                     <?php else: ?>
                         Nobody
                     <?php endif;?>
                 </h3>
                 <p class="text-center">
-                    <?php if (!$battleResult->isThereAWinner()): ?>
+                    <?php if ($outcome['winning_ship'] == null): ?>
                         Both ships destroyed each other in an epic battle to the end.
                     <?php else: ?>
-                        The <?php echo $battleResult->getWinningShip()->getName(); ?>
-                        <?php if ($battleResult->wereJediPowersUsed()): ?>
+                        The <?php echo $outcome['winning_ship']->getName(); ?>
+                        <?php if ($outcome['used_jedi_powers']): ?>
                             used its Jedi Powers for a stunning victory!
                         <?php else: ?>
-                            overpowered and destroyed the <?php echo $battleResult->getLosingShip()->getName() ?>s
+                            overpowered and destroyed the <?php echo $outcome['losing_ship']->getName() ?>s
                         <?php endif;?>
                     <?php endif;?>
                 </p>
-                <h3>Ship Health</h3>
-                <dl class="dl-horizontal">
-                    <dt><?php echo $ship1->getName(); ?></dt>
-                    <dd><?php echo $ship1->getStrength(); ?></dd>
-                    <dt><?php echo $ship2->getName(); ?></dt>
-                    <dd><?php echo $ship2->getStrength(); ?></dd>
-                </dl>
             </div>
             <a href="index.php"><p class="text-center"><i class="fa fa-undo"></i> Battle again</p></a>
 

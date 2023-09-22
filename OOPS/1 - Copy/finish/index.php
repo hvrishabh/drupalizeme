@@ -1,16 +1,7 @@
 <?php
-require __DIR__ . '/bootstrap.php';
+require __DIR__.'/functions.php';
 
-$getShip = new ShipLoader;
-$ships = $getShip->getShips();
-// $ships = get_ships();
-
-// echo "<pre>";
-// print_r($ships);
-// $test = $ships['starfighter']->name;
-// print_r($test);
-
-echo "</pre>";
+$ships = get_ships();
 
 $errorMessage = '';
 if (isset($_GET['error'])) {
@@ -54,7 +45,7 @@ if (isset($_GET['error'])) {
         <div>
             <?php echo $errorMessage; ?>
         </div>
-    <?php endif;?>
+    <?php endif; ?>
 
     <body>
         <div class="container">
@@ -82,28 +73,27 @@ if (isset($_GET['error'])) {
                             <td>
                                 <?php if ($ship->isFunctional()): ?>
                                     <i class="fa fa-sun-o"></i>
-                                    <?php else: ?>
+                                <?php else: ?>
                                     <i class="fa fa-cloud"></i>
-                                <?php endif;?>
-
+                                <?php endif; ?>
                             </td>
                         </tr>
-                    <?php endforeach;?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
-
+            
             <div class="battle-box center-block border">
                 <div>
-                    <form method="POST" action="battle.php">
+                    <form method="POST" action="/battle.php">
                         <h2 class="text-center">The Mission</h2>
                         <input class="center-block form-control text-field" type="text" name="ship1_quantity" placeholder="Enter Number of Ships" />
                         <select class="center-block form-control btn drp-dwn-width btn-default dropdown-toggle" name="ship1_name">
                             <option value="">Choose a Ship</option>
                             <?php foreach ($ships as $key => $ship): ?>
-                                <?php if($ship->isFunctional()): ?>
+                                <?php if ($ship->isFunctional()): ?>
                                     <option value="<?php echo $key; ?>"><?php echo $ship->getNameAndSpecs(); ?></option>
                                 <?php endif; ?>
-                            <?php endforeach;?>
+                            <?php endforeach; ?>
                         </select>
                         <br>
                         <p class="text-center">AGAINST</p>
@@ -112,10 +102,10 @@ if (isset($_GET['error'])) {
                         <select class="center-block form-control btn drp-dwn-width btn-default dropdown-toggle" name="ship2_name">
                             <option value="">Choose a Ship</option>
                             <?php foreach ($ships as $key => $ship): ?>
-                                <?php if($ship->isFunctional()): ?>
+                                <?php if ($ship->isFunctional()): ?>
                                     <option value="<?php echo $key; ?>"><?php echo $ship->getNameAndSpecs(); ?></option>
                                 <?php endif; ?>
-                            <?php endforeach;?>
+                            <?php endforeach; ?>
                         </select>
                         <br>
                         <button class="btn btn-md btn-danger center-block" type="submit">Engage</button>
