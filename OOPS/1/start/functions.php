@@ -6,29 +6,34 @@ function get_ships()
 {
     $ships = array();
 
-    $ship = new Ship;
-    $ship->setName("Jedi StarFighter");
+    $ship = new Ship("Jedi StarFighter");
+    // $ship->setName("Jedi StarFighter");
     $ship->setWeaponPower(5);
     $ship->setJediFactor(16);
     $ship->setStrength(30);
-
+    // $ship->setUnderRepair(true);
     $ships['starfighter'] = $ship;
 
-    $ship2 = new Ship;
-
-    $ship2->setName("clookShape Fighter");
+    $ship2 = new Ship("clookShape Fighter");
+    // $ship2->setName("clookShape Fighter");
     $ship2->setWeaponPower(10);
     $ship2->setJediFactor(17);
     $ship2->setStrength(20);
+    // $ship2->setUnderRepair(true);
     $ships['ClookShape_Fighter'] = $ship2;
 
-
-    $ship3 = new Ship;
-    $ship3->setName("hawwHAHAHA Fighter");
+    $ship3 = new Ship("hawwHAHAHA Fighter");
+    // $ship3->setName("hawwHAHAHA Fighter");
     $ship3->setWeaponPower(102);
     $ship3->setJediFactor(172);
     $ship3->setStrength(202);
+    // $ship3->setUnderRepair(true);
     $ships['hawwHAHAHA_Fighter'] = $ship3;
+
+    // echo "<pre>";
+    // print_r($ships);
+    // echo "</pre>";
+
     return $ships;
 }
 
@@ -91,5 +96,5 @@ function didJediDestroyShipUsingTheForce(Ship $ship)
 {
     $jediHeroProbability = $ship->getJediFactor() / 100;
 
-    return mt_rand(1, 100) <= ($jediHeroProbability*100);
+    return mt_rand(1, 100) <= ($jediHeroProbability * 100);
 }
