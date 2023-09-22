@@ -2,8 +2,8 @@
 require __DIR__.'/functions.php';
 
 $ships = get_ships();
-echo "<pre>";
-print_r($ships);
+// echo "<pre>";
+// print_r($ships);
 // $test = $ships['starfighter']->name;
 // print_r($test);
 
