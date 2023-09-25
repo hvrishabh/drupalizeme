@@ -2,6 +2,7 @@
 
 class Ship
 {
+    private $id;
     private $name;
     private $weaponPower;
     private $jediFactor;
@@ -121,4 +122,20 @@ class Ship
         $this->name = $name;
         return $this;
     }
+
+	/**
+	 * @return integer
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
+	 * @param integer $id
+	 * @return self
+	 */
+	public function setId($id): self {
+		$this->id = $id;
+		return $this;
+	}
 }

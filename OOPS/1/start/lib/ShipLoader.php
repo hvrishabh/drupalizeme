@@ -1,7 +1,17 @@
 <?Php
 
+/**
+ * Summary of ShipLoader
+ * @return Ship[];
+ */
 class ShipLoader
 {
+    private $pdo;
+
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
+    }
     public function getShips()
     {
 
@@ -37,49 +47,41 @@ class ShipLoader
         // }
 
         foreach ($shipsData as $shipData) {
-            $ship = new Ship($shipData['name']);
-            $ship->setWeaponPower($shipData['weapon_power']);
-            $ship->setJediFactor($shipData['jedi_factor']);
-            $ship->setStrength($shipData['strength']);
-
-            $ships[] = $ship;
+            $ships[] = $this->createShipFromData($shipData);
         }
-
-        // $ship = new Ship("Jedi StarFighter");
-        // $ship->setName("Jedi StarFighter");
-        // $ship->setWeaponPower(5);
-        // $ship->setJediFactor(16);
-        // $ship->setStrength(30);
-        // // $ship->setUnderRepair(true);
-        // $ships['starfighter'] = $ship;
-
-        // $ship2 = new Ship("clookShape Fighter");
-        // // $ship2->setName("clookShape Fighter");
-        // $ship2->setWeaponPower(10);
-        // $ship2->setJediFactor(17);
-        // $ship2->setStrength(20);
-        // // $ship2->setUnderRepair(true);
-        // $ships['ClookShape_Fighter'] = $ship2;
-
-        // $ship3 = new Ship("hawwHAHAHA Fighter");
-        // // $ship3->setName("hawwHAHAHA Fighter");
-        // $ship3->setWeaponPower(102);
-        // $ship3->setJediFactor(172);
-        // $ship3->setStrength(202);
-        // // $ship3->setUnderRepair(true);
-        // $ships['hawwHAHAHA_Fighter'] = $ship3;
-
-        // echo "<pre>";
-        // print_r($ships);
-        // echo "</pre>";
-
         return $ships;
+    }
+
+    public function findOneById($id)
+    {
+        $pdo = $this->getPDO();
+
+        $statement = $pdo->prepare('SELECT * FROM ship WHERE id = :id');
+        $statement->execute(array('id' => $id));
+        $shipArray = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if (!$shipArray) {
+            return null;
+        }
+        return $this->createShipFromData($shipArray);
+        // echo "<pre>";
+        // print_r($shipArray);
+        // echo "</pre>";
+    }
+
+    private function createShipFromData(array $shipData)
+    {
+        $ship = new Ship($shipData['name']);
+        $ship->setId($shipData['id']);
+        $ship->setWeaponPower($shipData['weapon_power']);
+        $ship->setJediFactor($shipData['jedi_factor']);
+        $ship->setStrength($shipData['strength']);
+
+        return $ship;
     }
     private function queryForShips()
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=oo_battle', 'root', '');
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+        $pdo = $this->getPDO();
         $statement = $pdo->prepare('SELECT * FROM ship');
         $statement->execute();
         $shipArray = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -87,6 +89,23 @@ class ShipLoader
         // print_r($shipArray);
         // echo "</pre>";
         return $shipArray;
+    }
+
+    /**
+     * Summary of getPDO
+     * @return PDO
+     */
+    private function getPDO()
+    {
+
+        // if ($this->pdo == null) {
+        //     $pdo = new PDO($this->dbDsn,$this->dbUser,$this->dbPass);
+        //     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        //     $this->pdo = $pdo;
+        // }
+
+        return $this->pdo;
     }
 }
 
